@@ -122,6 +122,8 @@ pub async fn new_get_scores_from_link(link:&str) -> Vec<Vec<String>>{
     let scores = html.select(&scores_selector);
     let mut ne_return_value:Vec<String> = Vec::new();
     let mut quartet_name:String = String::new();
+    let year_selector = scraper::Selector::parse("h2").unwrap();
+    let year = html.select(&year_selector).next().unwrap().inner_html().split(" ").next().unwrap().to_string();
     for i in scores {
         if i.attr("class").is_some() {
             if i.attr("class").unwrap() == "quartetLine" && i.child_elements().count() > 0 {
@@ -143,6 +145,7 @@ pub async fn new_get_scores_from_link(link:&str) -> Vec<Vec<String>>{
                 }
                 if ne_return_value.len() > 4 {
                     ne_return_value.push(quartet_name.clone());
+                    ne_return_value.push(year.clone());
                     return_value.push(ne_return_value);
                     ne_return_value = Vec::new();
                 }
