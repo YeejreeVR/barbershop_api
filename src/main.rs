@@ -3,6 +3,19 @@ mod barbershopapi;
 async fn main() {
     add_all_to_db().await;
 }
+async fn print_avarage_scores_from_years() {
+    let bt = barbershopapi::international_quartet_songs().await;
+    for i in 1995..2026 {
+        let mut all_scores_from_year = Vec::new();
+        for j in bt.to_owned() {
+            if j[6].parse::<i32>().unwrap() == i {
+                all_scores_from_year.push(j[4].parse::<f32>().unwrap());
+            }
+        }
+        println!("{:?}", all_scores_from_year);
+        println!("{}:  {:?}",i,all_scores_from_year.iter().sum::<f32>() / all_scores_from_year.len() as f32);
+    }
+}
 async fn add_all_to_db() {
     let wow = barbershopapi::international_chorus_in_score_order().await;
     for i in wow {
